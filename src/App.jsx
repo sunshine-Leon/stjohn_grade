@@ -72,20 +72,14 @@ function App() {
         }
     }, []);
 
-    useEffect(() => {
-        if (loginPassword && !isAuthenticated && !loading) {
-            handleLogin();
-        }
-    }, [loginPassword]);
-
     const getPersonalAnalysis = (student) => {
         if (!student) return { scores: [], strength: "", advice: "" };
 
         const scores = [
-            { label: '期中考', value: student.Midterm || 0, avg: data?.overallStats?.Midterm?.mean || 0 },
-            { label: '作業1', value: student['Assignment 1'] || 0, avg: data?.overallStats?.['Assignment 1']?.mean || 0 },
-            { label: '作業2', value: student['Assignment 2'] || 0, avg: data?.overallStats?.['Assignment 2']?.mean || 0 },
-            { label: '分組', value: student.Presentation || 0, avg: data?.overallStats?.Presentation?.mean || 0 },
+            { label: '期中考-基礎建模', value: student.Midterm || 0, avg: data?.overallStats?.Midterm?.mean || 0 },
+            { label: '跨領域設計碰撞檢討', value: student['Assignment 1'] || 0, avg: data?.overallStats?.['Assignment 1']?.mean || 0 },
+            { label: '進階參數化建模', value: student['Assignment 2'] || 0, avg: data?.overallStats?.['Assignment 2']?.mean || 0 },
+            { label: '團體專題報告', value: student.Presentation || 0, avg: data?.overallStats?.Presentation?.mean || 0 },
         ];
 
         let strength = "";
@@ -111,17 +105,17 @@ function App() {
         if (!stats) return "";
         const { mean, sd, max, min } = stats;
         if (key === 'Midterm') {
-            return `期中考平均分數為 ${mean}，標準差為 ${sd}。最高分達 ${max}，但最低分僅 ${min}。`;
+            return `期中考-基礎建模平均分數為 ${mean}，標準差為 ${sd}。最高分達 ${max}，但最低分僅 ${min}。`;
         }
         if (key === 'Assignment 1') {
-            return `作業 1 的平均分為 ${mean}。多數同學能準確完成基本建模任務。`;
+            return `跨領域設計碰撞檢討的平均分為 ${mean}。多數同學能準確完成基本建模任務。`;
         }
         if (key === 'Assignment 2') {
             const missingCount = data.rawData.filter(d => (parseFloat(d['Assignment 2']) || 0) === 0).length;
-            return `作業 2 的平均分為 ${mean}。最高分達 ${max}。約有 ${missingCount} 位同學未如期交件。`;
+            return `進階參數化建模的平均分為 ${mean}。最高分達 ${max}。約有 ${missingCount} 位同學未如期交件。`;
         }
         if (key === 'Presentation') {
-            return `分組報告平均分高達 ${mean}。大部分小組展現了優異的協作能力。`;
+            return `團體專題報告平均分高達 ${mean}。大部分小組展現了優異的協作能力。`;
         }
         if (key === 'TOTAL') {
             return `本學期總成績平均為 ${mean}。高分段比例顯著，展現出豐沛的學習潛力。`;
@@ -195,7 +189,7 @@ function App() {
                 <div className="grid-2">
                     {['Midterm', 'Assignment 1', 'Assignment 2', 'Presentation'].map((key, idx) => {
                         const colors = ['#6366f1', '#10b981', '#f59e0b', '#8b5cf6'];
-                        const labels = { Midterm: '期中考', 'Assignment 1': '作業 1', 'Assignment 2': '作業 2', Presentation: '分組報告' };
+                        const labels = { Midterm: '期中考-基礎建模', 'Assignment 1': '跨領域設計碰撞檢討', 'Assignment 2': '進階參數化建模', Presentation: '團體專題報告' };
                         return (
                             <div className="analysis-block" key={key}>
                                 <GradeChart data={data.overallStats[key].data} stats={data.overallStats[key]} title={labels[key]} color={colors[idx]} />
@@ -269,7 +263,10 @@ function App() {
                                 <div className="rank-number">#{idx + 1}</div>
                                 <div className="student-info">
                                     <div className="name-group">
-                                        <span className="student-name-id">{s['NAME (Bahasa Indonesia)']}</span>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                                            <span className="student-name-id">{s['NAME (Bahasa Indonesia)']}</span>
+                                            {s.isGamuda && <span className="gamuda-badge">GAMUDA 學生</span>}
+                                        </div>
                                         <span className="student-name-zh">{s['NAME (Mandarin)']}</span>
                                     </div>
                                     <div className="student-id">{s['Student ID']}</div>
