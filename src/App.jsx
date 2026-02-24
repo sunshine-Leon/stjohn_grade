@@ -11,7 +11,9 @@ import {
     GraduationCap,
     TrendingUp,
     Award,
-    AlertCircle
+    AlertCircle,
+    Sun,
+    Moon
 } from 'lucide-react';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell
@@ -25,6 +27,7 @@ function App() {
     const [error, setError] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loginPassword, setLoginPassword] = useState('');
+    const [theme, setTheme] = useState(localStorage.getItem('stjohn_theme') || 'light');
 
     const handleLogin = async (e) => {
         if (e) e.preventDefault();
@@ -71,6 +74,15 @@ function App() {
             setLoginPassword(saved);
         }
     }, []);
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('stjohn_theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    };
 
     const getPersonalAnalysis = (student) => {
         if (!student) return { scores: [], strength: "", advice: "" };
@@ -126,6 +138,9 @@ function App() {
     if (!isAuthenticated) {
         return (
             <div className="login-container">
+                <button className="theme-toggle" onClick={toggleTheme}>
+                    {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+                </button>
                 <div className="login-card">
                     <div className="login-header">
                         <GraduationCap size={64} className="login-icon" />
@@ -168,6 +183,9 @@ function App() {
 
     return (
         <div className="container animated-fade-in">
+            <button className="theme-toggle" onClick={toggleTheme}>
+                {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            </button>
             <header>
                 <div className="badge">114學年度上學期</div>
                 <h1>聖約翰產學合作專班 - 進階BIM理論與實務</h1>
