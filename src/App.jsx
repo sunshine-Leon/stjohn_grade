@@ -205,9 +205,15 @@ function App() {
                     <h2>單項成績詳細分析</h2>
                 </div>
                 <div className="grid-2">
-                    {['Midterm', 'Assignment 1', 'Assignment 2', 'Presentation'].map((key, idx) => {
-                        const colors = ['#6366f1', '#10b981', '#f59e0b', '#8b5cf6'];
-                        const labels = { Midterm: '期中考-基礎建模', 'Assignment 1': '跨領域設計碰撞檢討', 'Assignment 2': '進階參數化建模', Presentation: '團體專題報告' };
+                    {['Midterm', 'Assignment 1', 'Assignment 2', 'Presentation', 'TOTAL'].map((key, idx) => {
+                        const colors = ['#6366f1', '#10b981', '#f59e0b', '#8b5cf6', '#e11d48'];
+                        const labels = {
+                            Midterm: '期中考-基礎建模',
+                            'Assignment 1': '跨領域設計碰撞檢討',
+                            'Assignment 2': '進階參數化建模',
+                            Presentation: '團體專題報告',
+                            TOTAL: '學期總成績'
+                        };
                         return (
                             <div className="analysis-block" key={key}>
                                 <GradeChart data={data.overallStats[key].data} stats={data.overallStats[key]} title={labels[key]} color={colors[idx]} />
