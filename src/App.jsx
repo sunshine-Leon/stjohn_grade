@@ -31,11 +31,11 @@ function App() {
         setLoading(true);
         setError(null);
         try {
-            const csvRes = await fetch('/data.csv.enc');
+            const csvRes = await fetch('data.csv.enc');
             if (!csvRes.ok) throw new Error('無法讀取加密數據檔，請先執行加密腳本。');
             const encryptedCsv = await csvRes.text();
 
-            const configRes = await fetch('/config.json.enc');
+            const configRes = await fetch('config.json.enc');
             if (!configRes.ok) throw new Error('無法讀取加密配置檔');
             const encryptedConfig = await configRes.text();
 
